@@ -1,5 +1,6 @@
 " Begin .vimrc
 set nocompatible
+set relativenumber
 set number
 set hlsearch
 set incsearch
@@ -29,8 +30,8 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-let g:syntastic_php_phpcs_args='--tab-width=0'
-let g:syntastic_javascript_checkers=['jshint','jscs']
+let g:syntastic_php_phpcs_args = '--standard=' . $HOME . '/Proyectos/php-cs/Evalua/ruleset.xml'
+let g:syntastic_javascript_checkers=['jshint']
 
 "airline
 let g:airline_powerline_fonts = 1
@@ -54,7 +55,9 @@ set wildignore+=*/node_modules/*
 set wildignore+=*/bower_components/*
 
 "Phpqa for phpcs and phpmd
-let g:phpqa_codesniffer_cmd = "phpcs"
+let g:phpqa_messdetector_ruleset = $HOME . '/Proyectos/phpmd-ruleset/evalua-ruleset.xml'
+let g:phpqa_codesniffer_args = '--standard=' . $HOME . '/Proyectos/php-cs/Evalua/ruleset.xml'
+let g:phpqa_codesniffer_cmd = 'phpcs'
 let g:phpqa_messdetector_cmd='phpmd'
 
 "Ag for searching
@@ -72,6 +75,12 @@ nnoremap <leader>l1 :set number<CR>
 nnoremap <leader>l2 :set relativenumber<CR>
 
 "PDV extension
-let g:pdv_template_dir = $HOME ."/.vim/bundle/pdv/templates_snip"
-nnoremap <silent><leader>dc :call pdv#DocumentWithSnip()<CR>
+let g:pdv_template_dir = $HOME . '/.vim/bundle/pdv/templates_snip'
+nnoremap <leader>dc :call pdv#DocumentWithSnip()<CR>
 " End .vimrc 
+
+"Let's get rid of the cursor keys
+noremap <Up> <nop>
+noremap <Down> <nop>
+noremap <Left> <nop>
+noremap <Right> <nop>
