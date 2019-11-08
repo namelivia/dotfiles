@@ -91,7 +91,7 @@ endif
 
 "FZF
 set rtp+=~/.fzf
-nmap <C-p>	:Files<CR> 
+nmap <C-p> :Files<CR> 
 
 "CoC
 " Remap keys for gotos
