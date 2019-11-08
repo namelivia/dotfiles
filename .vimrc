@@ -46,12 +46,12 @@ noremap <f2> :bnext<CR>
 "nerdtree opens with Ctrl+N
 map <C-n> :NERDTreeToggle<CR> 
 
-"ctrlp exceptions (Some vendor folder patterns to avoid scanning in order to speed up ctrp)
-set wildignore+=*/vendor/* 
-set wildignore+=*/node_modules/*
-set wildignore+=*/bower_components/*
-set wildignore+=*__pycache__*
-set wildignore+=*env*
+"ctrlp exceptions (Probably not needed anymore since I'm not using ctrlp)
+"set wildignore+=*/vendor/* 
+"set wildignore+=*/node_modules/*
+"set wildignore+=*/bower_components/*
+"set wildignore+=*__pycache__*
+"set wildignore+=*env*
 
 "Ag instead of Ack for searching (probably not needed anymore with fzf)
 "let g:ackprg = 'ag --column --smart-case'
@@ -59,9 +59,6 @@ set wildignore+=*env*
 "cnoreabbrev aG Ack
 "cnoreabbrev Ag Ack
 "cnoreabbrev AG Ack
-
-"CtrlPTag mapping st for searching on tags
-nnoremap <leader>ts :CtrlPTag<CR>
 
 "PDV extension for snippets
 let g:pdv_template_dir = $HOME . '/.vim/bundle/pdv/templates_snip'
@@ -94,4 +91,13 @@ endif
 
 "FZF
 set rtp+=~/.fzf
+nmap <C-p>	:Files<CR> 
+
+"CoC
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
 " End .vimrc 
