@@ -106,4 +106,9 @@ set foldmethod=indent
 autocmd BufWinLeave,BufLeave,BufWritePost ?* nested silent! mkview!
 autocmd BufWinEnter ?* silent! loadview
 
+" Easier session management
+let g:sessions_dir = '~/vim-sessions'
+exec 'nnoremap <Leader>ss :mks! ' . g:sessions_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
+exec 'nnoremap <Leader>sr :so ' . g:sessions_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
+
 " End .vimrc 
