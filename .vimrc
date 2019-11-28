@@ -102,5 +102,8 @@ nmap <silent> gr <Plug>(coc-references)
 
 " Automatically folding code
 set foldmethod=indent
+" Saving folds automatically
+au BufWinLeave * mkview
+au BufWinEnter * silent loadview
 
 " End .vimrc 
