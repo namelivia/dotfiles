@@ -9,7 +9,7 @@ set incsearch "start searching at first char of the string
 set tabstop=4 "Tab is 4 spaces wide
 set shiftwidth=4 "Indent as one single tab
 set bs=2 "backspace character for moving the cursor over automatically inserted indentation
-set columns=120 "120 columns width
+"set columns=120 "120 columns width | disabled due to issues with terminator
 set background=dark "Sets the background to dark
 set wrapmargin=8 "Number of characters from the right window border where wrapping starts
 "set cindent "Smart indentation (probably not needed)
