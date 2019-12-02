@@ -1,14 +1,3 @@
-# A note about CODECOV_TOKEN
-#
-# To set the token for a specific Pipeline:
-#  - navigate to codecov.io and log in
-#  - click the github org, repo
-#  - click settings
-#  - copy the "Repository upload token"
-#  - go to the pipeline in the Azure web ui, and click Edit
-#  - Find the "Variables" button and click add
-#  - Call it "CODECOV_TOKEN"
-#  - Set the value to the repository upload token you got earlier
 jobs:
 - job: linux
   displayName: 'Linux'
@@ -21,9 +10,9 @@ jobs:
       'Python 2.7':
         # Tests are failing on Python 2.7.0 with the exception
         # "TypeError: argument can't be <type 'unicode'>"
-        YCM_PYTHON_VERSION: '2.7.13'
+        YCM_PYTHON_VERSION: '2.7.1'
       'Python 3.5':
-        YCM_PYTHON_VERSION: '3.5.3'
+        YCM_PYTHON_VERSION: '3.5.1'
     maxParallel: 2
   variables:
     COVERAGE: true
@@ -37,39 +26,6 @@ jobs:
   - script: ./azure/run_tests.sh
     displayName: Run tests
   - script: ./azure/send_coverage.sh
-    displayName: Send coverage
-    env:
-      CODECOV_TOKEN: $(CODECOV_TOKEN)
-      CODECOV_JOB_NAME: '$(Agent.JobName)'
-- job: linuxvim
-  displayName: 'Linux Vim tests'
-  pool:
-    # List of available software on this image:
-    # https://github.com/Microsoft/azure-pipelines-image-generation/blob/master/images/linux/Ubuntu1604-README.md
-    vmImage: 'ubuntu-16.04'
-  strategy:
-    matrix:
-      'Python 2.7':
-        IMAGE: ycm-vim-py2
-        PIP: pip
-      'Python 3.5':
-        IMAGE: ycm-vim-py3
-        PIP: pip3
-    maxParallel: 2
-  variables:
-    COVERAGE: true
-    YCM_TEST_STDOUT: true
-  container: 'youcompleteme/$(IMAGE):test'
-  steps:
-  - checkout: self
-    submodules: recursive
-  - bash: sudo -H $(PIP) install -r python/test_requirements.txt
-    displayName: Install dependencies
-  - bash: python3 ./install.py --ts-completer --clangd-completer --java-completer
-    displayName: Build ycmd
-  - script: ./test/run_vim_tests
-    displayName: Run vim tests
-  - bash: codecov --disable gcov --name '$(Agent.JobName)'
     displayName: Send coverage
     env:
       CODECOV_TOKEN: $(CODECOV_TOKEN)

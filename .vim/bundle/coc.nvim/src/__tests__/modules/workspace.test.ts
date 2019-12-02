@@ -436,11 +436,6 @@ describe('workspace methods', () => {
 
 describe('workspace utility', () => {
 
-  it('should support float', async () => {
-    let floatSupported = workspace.floatSupported
-    expect(floatSupported).toBe(true)
-  })
-
   it('should loadFile', async () => {
     let doc = await helper.createDocument()
     let newFile = URI.file(path.join(__dirname, 'abc')).toString()

@@ -1,5 +1,4 @@
 " MIT License. Copyright (c) 2017-2019 Thomas Dy et al.
-" Plugin: https://github.com/Shougo/denite.nvim
 " vim: et ts=2 sts=2 sw=2
 
 scriptencoding utf-8

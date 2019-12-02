@@ -1,7 +1,3 @@
-" MIT License. Copyright (c) 2019 Peng Guanwen et al.
-" vim: et ts=2 sts=2 sw=2
-" Plugin: https://github.com/neoclide/coc
-
 scriptencoding utf-8
 
 let s:error_symbol = get(g:, 'airline#extensions#coc#error_symbol', 'E:')

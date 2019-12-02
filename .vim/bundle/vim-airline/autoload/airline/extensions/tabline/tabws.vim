@@ -1,5 +1,4 @@
 " MIT License. Copyright (c) 2016-2019 Kevin Sapper et al.
-" PLugin: https://github.com/s1341/vim-tabws
 " vim: et ts=2 sts=2 sw=2
 
 scriptencoding utf-8

@@ -31,8 +31,10 @@ import signal
 import vim
 from subprocess import PIPE
 from tempfile import NamedTemporaryFile
-from ycm import base, paths, signature_help, vimsupport
-from ycm.buffer import BufferDict
+from ycm import base, paths, vimsupport
+from ycm.buffer import ( BufferDict,
+                         DIAGNOSTIC_UI_FILETYPES,
+                         DIAGNOSTIC_UI_ASYNC_FILETYPES )
 from ycmd import utils
 from ycmd.request_wrap import RequestWrap
 from ycm.omni_completer import OmniCompleter
@@ -42,8 +44,6 @@ from ycm.client.base_request import BaseRequest, BuildRequestData
 from ycm.client.completer_available_request import SendCompleterAvailableRequest
 from ycm.client.command_request import SendCommandRequest
 from ycm.client.completion_request import CompletionRequest
-from ycm.client.signature_help_request import SignatureHelpRequest
-from ycm.client.signature_help_request import SigHelpAvailableByFileType
 from ycm.client.debug_info_request import ( SendDebugInfoRequest,
                                             FormatDebugInfoResponse )
 from ycm.client.omni_completion_request import OmniCompletionRequest
@@ -113,9 +113,6 @@ class YouCompleteMe( object ):
     self._omnicomp = None
     self._buffers = None
     self._latest_completion_request = None
-    self._latest_signature_help_request = None
-    self._signature_help_available_requests = SigHelpAvailableByFileType()
-    self._signature_help_state = signature_help.SignatureHelpState()
     self._logger = logging.getLogger( 'ycm' )
     self._client_logfile = None
     self._server_stdout = None
@@ -295,7 +292,6 @@ class YouCompleteMe( object ):
   def SendCompletionRequest( self, force_semantic = False ):
     request_data = BuildRequestData()
     request_data[ 'force_semantic' ] = force_semantic
-
     if not self.NativeFiletypeCompletionUsable():
       wrapped_request_data = RequestWrap( request_data )
       if self._omnicomp.ShouldUseNow( wrapped_request_data ):
@@ -319,60 +315,6 @@ class YouCompleteMe( object ):
     response[ 'completions' ] = base.AdjustCandidateInsertionText(
         response[ 'completions' ] )
     return response
-
-
-  def SendSignatureHelpRequest( self ):
-    """Send a signature help request, if we're ready to. Return whether or not a
-    request was sent (and should be checked later)"""
-    if not self.NativeFiletypeCompletionUsable():
-      return False
-
-    if not self._latest_completion_request:
-      return False
-
-    for filetype in vimsupport.CurrentFiletypes():
-      if not self._signature_help_available_requests[ filetype ].Done():
-        continue
-
-      sig_help_available = self._signature_help_available_requests[
-          filetype ].Response()
-      if sig_help_available == 'NO':
-        continue
-
-      if sig_help_available == 'PENDING':
-        # Send another /signature_help_available request
-        self._signature_help_available_requests[ filetype ].Start( filetype )
-        return False
-
-      request_data = self._latest_completion_request.request_data.copy()
-      request_data[ 'signature_help_state' ] = self._signature_help_state.state
-
-      self._AddExtraConfDataIfNeeded( request_data )
-
-      self._latest_signature_help_request = SignatureHelpRequest( request_data )
-      self._latest_signature_help_request.Start()
-      return True
-
-
-  def SignatureHelpRequestReady( self ):
-    return bool( self._latest_signature_help_request and
-                 self._latest_signature_help_request.Done() )
-
-
-  def GetSignatureHelpResponse( self ):
-    return self._latest_signature_help_request.Response()
-
-
-  def ClearSignatureHelp( self ):
-    self.UpdateSignatureHelp( {} )
-    if self._latest_signature_help_request:
-      self._latest_signature_help_request.Reset()
-
-
-  def UpdateSignatureHelp( self, signature_info ):
-    self._signature_help_state = signature_help.UpdateSignatureHelp(
-      self._signature_help_state,
-      signature_info )
 
 
   def SendCommandRequest( self,
@@ -451,9 +393,6 @@ class YouCompleteMe( object ):
 
 
   def UpdateWithNewDiagnosticsForFile( self, filepath, diagnostics ):
-    if not self._user_options[ 'show_diagnostics_ui' ]:
-      return
-
     bufnr = vimsupport.GetBufferNumberForFilename( filepath )
     if bufnr in self._buffers and vimsupport.BufferIsVisible( bufnr ):
       # Note: We only update location lists, etc. for visible buffers, because
@@ -530,19 +469,7 @@ class YouCompleteMe( object ):
     self.CurrentBuffer().UpdateMatches()
 
 
-  def OnFileTypeSet( self ):
-    buffer_number = vimsupport.GetCurrentBufferNumber()
-    filetypes = vimsupport.CurrentFiletypes()
-    self._buffers[ buffer_number ].UpdateFromFileTypes( filetypes )
-    self.OnBufferVisit()
-
-
   def OnBufferVisit( self ):
-    filetype = vimsupport.CurrentFiletypes()[ 0 ]
-    # The constructor of dictionary values starts the request,
-    # so the line below fires a new request only if the dictionary
-    # value is accessed for the first time.
-    self._signature_help_available_requests[ filetype ].Done()
     extra_data = {}
     self._AddUltiSnipsDataIfNeeded( extra_data )
     SendEventNotificationAsync( 'BufferVisit', extra_data = extra_data )
@@ -590,6 +517,17 @@ class YouCompleteMe( object ):
     return self.CurrentBuffer().GetWarningCount()
 
 
+  def DiagnosticUiSupportedForCurrentFiletype( self ):
+    return any( x in DIAGNOSTIC_UI_FILETYPES or
+                x in DIAGNOSTIC_UI_ASYNC_FILETYPES
+                for x in vimsupport.CurrentFiletypes() )
+
+
+  def ShouldDisplayDiagnostics( self ):
+    return bool( self._user_options[ 'show_diagnostics_ui' ] and
+                 self.DiagnosticUiSupportedForCurrentFiletype() )
+
+
   def _PopulateLocationListWithLatestDiagnostics( self ):
     return self.CurrentBuffer().PopulateLocationList()
 
@@ -612,12 +550,15 @@ class YouCompleteMe( object ):
          current_buffer.FileParseRequestReady( block ) and
          self.NativeFiletypeCompletionUsable() ):
 
-      if self._user_options[ 'show_diagnostics_ui' ]:
+      if self.ShouldDisplayDiagnostics():
         # Forcefuly update the location list, etc. from the parse request when
         # doing something like :YcmDiags
-        current_buffer.UpdateDiagnostics( block )
+        current_buffer.UpdateDiagnostics( block is True )
       else:
-        # If the user disabled diagnostics, we just want to check
+        # YCM client has a hard-coded list of filetypes which are known
+        # to support diagnostics, self.DiagnosticUiSupportedForCurrentFiletype()
+        #
+        # For filetypes which don't support diagnostics, we just want to check
         # the _latest_file_parse_request for any exception or UnknownExtraConf
         # response, to allow the server to raise configuration warnings, etc.
         # to the user. We ignore any other supplied data.
@@ -699,7 +640,7 @@ class YouCompleteMe( object ):
   def ToggleLogs( self, *filenames ):
     logfiles = self.GetLogfiles()
     if not filenames:
-      sorted_logfiles = sorted( logfiles )
+      sorted_logfiles = sorted( list( logfiles ) )
       try:
         logfile_index = vimsupport.SelectFromList(
           'Which logfile do you wish to open (or close if already open)?',

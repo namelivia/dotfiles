@@ -350,15 +350,15 @@ describe('list normal mappings', () => {
 
   it('should toggle selection <space>', async () => {
     await manager.start(['--normal', 'location'])
-    await helper.wait(100)
+    await helper.wait(30)
     await nvim.eval('feedkeys("\\<space>", "in")')
-    await helper.wait(100)
+    await helper.wait(30)
     let selected = manager.ui.selectedItems
     expect(selected.length).toBe(1)
     await nvim.eval('feedkeys("k", "in")')
-    await helper.wait(100)
+    await helper.wait(30)
     await nvim.eval('feedkeys("\\<space>", "in")')
-    await helper.wait(100)
+    await helper.wait(30)
     selected = manager.ui.selectedItems
     expect(selected.length).toBe(0)
   })
@@ -438,7 +438,6 @@ describe('User mappings', () => {
       '<C-x>': 'do:defaultaction',
       '<C-h>': 'do:help',
       '<C-d>': 'do:exit',
-      '<C-m>': 'do:toggleMode',
     })
     await manager.start(['location'])
     await helper.wait(200)
@@ -468,12 +467,6 @@ describe('User mappings', () => {
     expect(manager.isActivated).toBe(false)
     let winnr = await nvim.call('winnr')
     expect(winnr > 1).toBe(true)
-    await manager.start(['location'])
-    await nvim.eval('feedkeys("\\<C-m>", "in")')
-    await helper.wait(30)
-    expect(manager.isActivated).toBe(true)
-    let line = await helper.getCmdline()
-    expect(line).toBe('')
     await manager.start(['location'])
     await nvim.eval('feedkeys("?", "in")')
     await helper.wait(30)
@@ -514,7 +507,7 @@ describe('User mappings', () => {
     await manager.start(['location'])
     await helper.wait(30)
     await nvim.eval(`feedkeys("\\<C-d>", "in")`)
-    await helper.wait(100)
+    await helper.wait(30)
     let nr = await nvim.call('tabpagenr')
     expect(nr).toBe(2)
   })
@@ -576,7 +569,7 @@ describe('User mappings', () => {
     await manager.start(['location'])
     await helper.wait(30)
     await nvim.eval(`feedkeys("\\<C-t>", "in")`)
-    await helper.wait(100)
+    await helper.wait(30)
     let nr = await nvim.call('tabpagenr')
     expect(nr).toBe(2)
   })

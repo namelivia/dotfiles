@@ -375,7 +375,7 @@ export class Workspace implements IWorkspace {
     let filepath = await this.nvim.call('expand', '%:p') as string
     filepath = path.normalize(filepath)
     let isFile = filepath && path.isAbsolute(filepath)
-    if (isFile && !isParentFolder(cwd, filepath, true)) {
+    if (isFile && !isParentFolder(cwd, filepath)) {
       // can't use cwd
       return findUp(filename, path.dirname(filepath))
     }
@@ -643,7 +643,7 @@ export class Workspace implements IWorkspace {
   public getWorkspaceFolder(uri: string): WorkspaceFolder | null {
     this.workspaceFolders.sort((a, b) => b.uri.length - a.uri.length)
     let filepath = URI.parse(uri).fsPath
-    return this.workspaceFolders.find(folder => isParentFolder(URI.parse(folder.uri).fsPath, filepath, true))
+    return this.workspaceFolders.find(folder => isParentFolder(URI.parse(folder.uri).fsPath, filepath))
   }
 
   /**
@@ -1479,7 +1479,7 @@ augroup end`
         if (root) return root
       }
     }
-    if (this.cwd != os.homedir() && isParentFolder(this.cwd, dir, true)) return this.cwd
+    if (this.cwd != os.homedir() && isParentFolder(this.cwd, dir)) return this.cwd
     return null
   }
 
@@ -1571,11 +1571,6 @@ augroup end`
 
   public get folderPaths(): string[] {
     return this.workspaceFolders.map(f => URI.parse(f.uri).fsPath)
-  }
-
-  public get floatSupported(): boolean {
-    let { env } = this
-    return env.floating || env.textprop
   }
 
   public removeWorkspaceFolder(fsPath: string): void {

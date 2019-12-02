@@ -39,7 +39,7 @@ export default class FloatFactory implements Disposable {
     private maxHeight = 999,
     private maxWidth?: number,
     private autoHide = true) {
-    if (!workspace.floatSupported) return
+    if (!env.floating && !env.textprop) return
     this.maxWidth = Math.min(maxWidth || 80, this.columns - 10)
     events.on('BufEnter', bufnr => {
       if (this.buffer && bufnr == this.buffer.id) return
@@ -154,15 +154,11 @@ export default class FloatFactory implements Disposable {
     }
   }
   public async create(docs: Documentation[], allowSelection = false, offsetX = 0): Promise<void> {
-    if (!workspace.floatSupported) {
-      logger.error('Floating window & textprop not supported!')
-      return
-    }
     let shown = await this.createPopup(docs, allowSelection, offsetX)
     if (!shown) this.close(false)
   }
 
-  private async createPopup(docs: Documentation[], allowSelection = false, offsetX = 0): Promise<boolean> {
+  public async createPopup(docs: Documentation[], allowSelection = false, offsetX = 0): Promise<boolean> {
     if (this.tokenSource) {
       this.tokenSource.cancel()
     }

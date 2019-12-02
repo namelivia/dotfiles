@@ -74,13 +74,13 @@ export default class Mappings {
       return prompt.insertRegister()
     })
     this.add('insert', '<C-d>', () => {
-      return manager.feedkeys('<C-d>', false)
+      return manager.feedkeys('<C-d>')
     })
     this.add('insert', '<PageUp>', () => {
-      return manager.feedkeys('<PageUp>', false)
+      return manager.feedkeys('<PageUp>')
     })
     this.add('insert', '<PageDown>', () => {
-      return manager.feedkeys('<PageDown>', false)
+      return manager.feedkeys('<PageDown>')
     })
     this.add('insert', '<down>', () => {
       return manager.normal('j')
@@ -283,8 +283,6 @@ export default class Mappings {
         case 'defaultaction':
           await manager.doAction()
           return
-        case 'toggleMode':
-          return manager.toggleMode()
         default:
           await this.onError(`'${action}' not supported`)
       }

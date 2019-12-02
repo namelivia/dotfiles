@@ -369,11 +369,7 @@ endfunction
 function! NERDTreeCopyPath()
     let l:nodePath = g:NERDTreeFileNode.GetSelected().path.str()
     if has("clipboard")
-        if &clipboard == "unnamedplus"
-            let @+ = l:nodePath
-        else
-            let @* = l:nodePath
-        endif
+        let @* = l:nodePath
         call nerdtree#echo("The path [" . l:nodePath . "] was copied to your clipboard.")
     else
         call nerdtree#echo("The full path is: " . l:nodePath)

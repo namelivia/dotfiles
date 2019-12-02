@@ -44,17 +44,16 @@ class CommandRequest( BaseRequest ):
     self._buffer_command = buffer_command
     self._extra_data = extra_data
     self._response = None
-    self._request_data = None
 
 
   def Start( self ):
-    self._request_data = BuildRequestData()
+    request_data = BuildRequestData()
     if self._extra_data:
-      self._request_data.update( self._extra_data )
-    self._request_data.update( {
+      request_data.update( self._extra_data )
+    request_data.update( {
       'command_arguments': self._arguments
     } )
-    self._response = self.PostDataToHandler( self._request_data,
+    self._response = self.PostDataToHandler( request_data,
                                              'run_completer_command' )
 
 
@@ -110,23 +109,14 @@ class CommandRequest( BaseRequest ):
 
         # When there are multiple fixit suggestions, present them as a list to
         # the user hand have her choose which one to apply.
-        fixits = self._response[ 'fixits' ]
-        if len( fixits ) > 1:
+        if len( self._response[ 'fixits' ] ) > 1:
           fixit_index = vimsupport.SelectFromList(
             "Multiple FixIt suggestions are available at this location. "
             "Which one would you like to apply?",
-            [ fixit[ 'text' ] for fixit in fixits ] )
-        chosen_fixit = fixits[ fixit_index ]
-        if chosen_fixit[ 'resolve' ]:
-          self._request_data.update( { 'fixit': chosen_fixit } )
-          response = self.PostDataToHandler( self._request_data,
-                                             'resolve_fixit' )
-          fixits = response[ 'fixits' ]
-          assert len( fixits ) == 1
-          chosen_fixit = fixits[ 0 ]
+            [ fixit[ 'text' ] for fixit in self._response[ 'fixits' ] ] )
 
         vimsupport.ReplaceChunks(
-          chosen_fixit[ 'chunks' ],
+          self._response[ 'fixits' ][ fixit_index ][ 'chunks' ],
           silent = self._command == 'Format' )
       except RuntimeError as e:
         vimsupport.PostVimMessage( str( e ) )

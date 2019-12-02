@@ -72,6 +72,7 @@ export default class StatusLine implements Disposable {
       this._text = text
       nvim.pauseNotification()
       this.nvim.setVar('coc_status', text, true)
+      this.nvim.command('redraws', true)
       this.nvim.call('coc#util#do_autocmd', ['CocStatusChange'], true)
       await nvim.resumeNotification(false, true)
     }

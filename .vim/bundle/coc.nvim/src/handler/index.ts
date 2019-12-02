@@ -146,7 +146,6 @@ export default class Handler {
         let line = (await nvim.call('line', '.') as number) - 1
         let doc = workspace.getDocument(bufnr)
         if (!doc) return
-        await doc.checkDocument()
         let pre = doc.getline(line - 1)
         let curr = doc.getline(line)
         let prevChar = pre[pre.length - 1]
@@ -808,11 +807,11 @@ export default class Handler {
       doc.forceSync()
       await wait(50)
     }
-    let pos: Position = insertLeave ? { line: position.line, character: origLine.length } : position
+    let pos: Position = insertLeave ? { line: position.line + 1, character: 0 } : position
     try {
       let edits = await languages.provideDocumentOnTypeEdits(ch, doc.textDocument, pos)
       // changed by other process
-      if (doc.changedtick != changedtick || edits == null) return
+      if (doc.changedtick != changedtick) return
       if (insertLeave) {
         edits = edits.filter(edit => {
           return edit.range.start.line < position.line + 1
