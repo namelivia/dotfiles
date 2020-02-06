@@ -342,6 +342,11 @@
         <command>gmrun</command>
       </action>
     </keybind>
+    <keybind key="W-s">
+      <action name="Execute">
+        <command>scrot -s /tmp/screenshot.png</command>
+      </action>
+    </keybind>
     <keybind key="W-t">
       <action name="Execute">
         <startupnotify>
