@@ -15,6 +15,8 @@ set wrapmargin=8 "Number of characters from the right window border where wrappi
 "set cindent "Smart indentation (probably not needed)
 "set t_Co=256 "Terminal colors, probably not needed
 set showcmd "shows partial commands in the last line of the screen
+set cursorline "highlight the line where cursor is
+set cursorcolumn "highlight the column where cursor is
 filetype indent on 
 syntax on "Highlight language syntax
 set ruler "Shows the ruler (down-right positional info)
@@ -53,12 +55,9 @@ map <C-n> :NERDTreeToggle<CR>
 "set wildignore+=*__pycache__*
 "set wildignore+=*env*
 
-"Ag instead of Ack for searching (probably not needed anymore with fzf)
-"let g:ackprg = 'ag --column --smart-case'
-"cnoreabbrev ag Ack
-"cnoreabbrev aG Ack
-"cnoreabbrev Ag Ack
-"cnoreabbrev AG Ack
+cnoreabbrev ag Ag
+cnoreabbrev aG Ag
+cnoreabbrev AG Ag
 
 "PDV extension for snippets
 let g:pdv_template_dir = $HOME . '/.vim/bundle/pdv/templates_snip'
