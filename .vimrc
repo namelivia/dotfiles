@@ -21,6 +21,7 @@ filetype indent on
 syntax on "Highlight language syntax
 set ruler "Shows the ruler (down-right positional info)
 let mapleader = ',' "Remapping leader to an easier to reach key
+set colorcolumn=120 "Highligt the 120'th line (should be the last)
 "Pathogen to activate plugins
 execute pathogen#infect()
 
@@ -112,5 +113,4 @@ exec 'nnoremap <Leader>sr :so ' . g:sessions_dir . '/*.vim<C-D><BS><BS><BS><BS><
 
 " insert pudb trace
 nnoremap <leader>rr Ofrom pudb.remote import set_trace<Enter>set_trace(term_size=(270, 72), host='0.0.0.0', port=4444)<Esc>
-
 " End .vimrc 
