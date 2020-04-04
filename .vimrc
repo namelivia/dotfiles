@@ -8,7 +8,9 @@ set incsearch "start searching at first char of the string
 "autocmd FileType html setlocal shiftwidth=2 tabstop=2
 set tabstop=4 "Tab is 4 spaces wide
 set shiftwidth=4 "Indent as one single tab
+set softtabstop=4 "Tab is 4 spaces wide
 set bs=2 "backspace character for moving the cursor over automatically inserted indentation
+set expandtab "instead of inserting a tab, insert the same width but in spaces
 "set columns=120 "120 columns width | disabled due to issues with terminator
 set background=dark "Sets the background to dark
 set wrapmargin=8 "Number of characters from the right window border where wrapping starts
@@ -70,7 +72,7 @@ noremap <Left> <nop>
 noremap <Right> <nop>
 
 "Set proper tab configurations when working on Python files
-autocmd FileType python set sw=4 ts=4 sts=4
+autocmd FileType python set sw=4 ts=4 sts=4 expandtab
 
 "YouCompleteMe config (autocompletition)
 let g:ycm_collect_identifiers_from_tags_files = 1 " Let YCM read tags from Ctags file
