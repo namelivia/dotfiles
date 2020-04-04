@@ -21,7 +21,6 @@ filetype indent on
 syntax on "Highlight language syntax
 set ruler "Shows the ruler (down-right positional info)
 let mapleader = ',' "Remapping leader to an easier to reach key
-set colorcolumn=120 "Highligt the 120'th line (should be the last)
 "Pathogen to activate plugins
 execute pathogen#infect()
 
@@ -108,9 +107,15 @@ autocmd BufWinEnter ?* silent! loadview
 
 " Easier session management
 let g:sessions_dir = '~/vim-sessions'
-exec 'nnoremap <Leader>ss :mks! ' . g:sessions_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
-exec 'nnoremap <Leader>sr :so ' . g:sessions_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
+exec 'nnoremap <leader>ss :mks! ' . g:sessions_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
+exec 'nnoremap <leader>sr :so ' . g:sessions_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
+exec 'nnoremap <leader>ss :mks! ' . g:sessions_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
 
 " insert pudb trace
 nnoremap <leader>rr Ofrom pudb.remote import set_trace<Enter>set_trace(term_size=(270, 72), host='0.0.0.0', port=4444)<Esc>
+set colorcolumn=120 "Highligt the 120'th line (should be the last)
+
+" show/hide invisible characters and set custom symbols
+nmap <Leader>l :set list!<CR>
+set listchars=space:·,eol:¬,tab:»æ
 " End .vimrc 
