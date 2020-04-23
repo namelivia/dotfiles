@@ -6,8 +6,8 @@ set hlsearch "Highlights search matches
 set incsearch "start searching at first char of the string
 "tabstop and stuff for html
 "autocmd FileType html setlocal shiftwidth=2 tabstop=2
-set tabstop=4 "Tab is 4 spaces wide
 set shiftwidth=4 "Indent as one single tab
+set tabstop=4 "Tab is 4 spaces wide
 set softtabstop=4 "Tab is 4 spaces wide
 set bs=2 "backspace character for moving the cursor over automatically inserted indentation
 set expandtab "instead of inserting a tab, insert the same width but in spaces
@@ -19,7 +19,6 @@ set wrapmargin=8 "Number of characters from the right window border where wrappi
 set showcmd "shows partial commands in the last line of the screen
 set cursorline "highlight the line where cursor is
 set cursorcolumn "highlight the column where cursor is
-filetype indent on 
 syntax on "Highlight language syntax
 set ruler "Shows the ruler (down-right positional info)
 let mapleader = ',' "Remapping leader to an easier to reach key
@@ -71,8 +70,14 @@ noremap <Down> <nop>
 noremap <Left> <nop>
 noremap <Right> <nop>
 
-"Set proper tab configurations when working on Python files
-autocmd FileType python set sw=4 ts=4 sts=4 expandtab
+"INDENTATION BY FILE
+"Set proper indentation configurations when working on Python files
+if has("autocmd")
+	filetype on "Enable file type detection
+	autocmd FileType python setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab
+	autocmd FileType javascript setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab
+	autocmd FileType php setlocal shiftwidth=4 tabstop=4 softtabstop=4 noexpandtab
+endif
 
 "YouCompleteMe config (autocompletition)
 let g:ycm_collect_identifiers_from_tags_files = 1 " Let YCM read tags from Ctags file
@@ -112,6 +117,12 @@ let g:sessions_dir = '~/vim-sessions'
 exec 'nnoremap <leader>ss :mks! ' . g:sessions_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
 exec 'nnoremap <leader>sr :so ' . g:sessions_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
 exec 'nnoremap <leader>ss :mks! ' . g:sessions_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
+
+" Faster window switching
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
 
 " insert pudb trace
 nnoremap <leader>rr Ofrom pudb.remote import set_trace<Enter>set_trace(term_size=(270, 72), host='0.0.0.0', port=4444)<Esc>
