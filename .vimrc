@@ -124,6 +124,9 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
+" Exit from terminal mode easier
+:tnoremap <Esc> <C-\><C-n>
+
 " insert pudb trace
 nnoremap <leader>rr Ofrom pudb.remote import set_trace<Enter>set_trace(term_size=(270, 72), host='0.0.0.0', port=4444)<Esc>
 set colorcolumn=120 "Highligt the 120'th line (should be the last)
