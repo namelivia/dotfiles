@@ -134,4 +134,7 @@ set colorcolumn=120 "Highligt the 120'th line (should be the last)
 " show/hide invisible characters and set custom symbols
 nmap <Leader>l :set list!<CR>
 set listchars=space:·,eol:¬,tab:»æ
+
+" gundo plugin
+nnoremap <F5> :GundoToggle<CR>
 " End .vimrc 
