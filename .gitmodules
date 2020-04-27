@@ -49,6 +49,9 @@
 [submodule ".vim/bundle/vim-unimpaired"]
 	path = .vim/bundle/vim-unimpaired
 	url = git@github.com:tpope/vim-unimpaired.git
+[submodule ".vim/bundle/gundo"]
+	path = .vim/bundle/gundo
+	url = git@github.com:sjl/gundo.vim.git
 [submodule ".vim/bundle/surrond"]
 	path = .vim/bundle/surrond
 	url = git@github.com:tpope/vim-surround.git
