@@ -21,6 +21,7 @@ set cursorline "highlight the line where cursor is
 set cursorcolumn "highlight the column where cursor is
 syntax on "Highlight language syntax
 set ruler "Shows the ruler (down-right positional info)
+set inccommand=nosplit "replacement live feedback
 let mapleader = ',' "Remapping leader to an easier to reach key
 "Pathogen to activate plugins
 execute pathogen#infect()
