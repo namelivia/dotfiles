@@ -100,13 +100,6 @@ endif
 set rtp+=~/.fzf
 nmap <C-p> :Files<CR> 
 
-"CoC
-" Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
 " Automatically folding code
 set foldmethod=indent
 " Saving folds automatically
@@ -125,9 +118,6 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
-" Exit from terminal mode easier
-:tnoremap <Esc> <C-\><C-n>
-
 " insert pudb trace
 nnoremap <leader>rr Ofrom pudb.remote import set_trace<Enter>set_trace(term_size=(270, 72), host='0.0.0.0', port=4444)<Esc>
 set colorcolumn=120 "Highligt the 120'th line (should be the last)
@@ -138,4 +128,8 @@ set listchars=space:·,eol:¬,tab:»æ
 
 " gundo plugin
 nnoremap <F5> :GundoToggle<CR>
+
+" vimwiki autocmd
+autocmd BufWritePost ~/vimwiki/*.wiki :VimwikiAll2HTML
+
 " End .vimrc 
