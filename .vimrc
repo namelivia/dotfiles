@@ -119,7 +119,7 @@ map <C-k> <C-w>k
 map <C-l> <C-w>l
 
 " insert pudb trace
-nnoremap <leader>rr Ofrom pudb.remote import set_trace<Enter>set_trace(term_size=(270, 72), host='0.0.0.0', port=4444)<Esc>
+nnoremap <leader>rr Ofrom pudb.remote import set_trace<Enter>set_trace(term_size=(211, 56), host='0.0.0.0', port=4444)<Esc>
 set colorcolumn=120 "Highligt the 120'th line (should be the last)
 
 " show/hide invisible characters and set custom symbols
@@ -132,4 +132,12 @@ nnoremap <F5> :GundoToggle<CR>
 " vimwiki autocmd
 autocmd BufWritePost ~/vimwiki/*.wiki :VimwikiAll2HTML
 
+"Map tag navigation key for non us keyboard
+nnoremap <leader>a <C-]>
+
+"Use .git as a CtrlP root marker
+let g:ctrlp_root_markers = ['.ctrlp']
+
 " End .vimrc 
+
+
