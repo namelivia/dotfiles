@@ -82,3 +82,6 @@
 [submodule ".vim/bundle/vim-smoothie"]
 	path = .vim/bundle/vim-smoothie
 	url = git@github.com:psliwka/vim-smoothie.git
+[submodule ".vim/bundle/leap.nvim"]
+	path = .vim/bundle/leap.nvim
+	url = git@github.com:ggandor/leap.nvim.git
