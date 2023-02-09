@@ -1,0 +1,7 @@
+#!/bin/bash
+DIR="$(cd "$(dirname "$0")" && pwd)"
+ln -s $DIR/utils/random-wallpaper/wallpaper /usr/local/bin/wallpaper
+ln -s $DIR/utils/headphones /usr/local/bin/headphones
+ln -s $DIR/utils/office /usr/local/bin/office
+ln -s $DIR/utils/home /usr/local/bin/home
+ln -s $DIR/utils/screenshot /usr/local/bin/screenshot

@@ -1,0 +1,15 @@
+{
+  "name": "wallaper",
+  "version": "1.0.0",
+  "description": "Get a wallpaper from reddit",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "reddit-api-image-getter": "^1.0.11",
+    "request": "^2.88.2"
+  }
+}
