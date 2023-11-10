@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "reddit-api-image-getter": "^1.0.11",
+    "reddit-api-image-getter": "^1.1.0",
     "request": "^2.88.2"
   }
 }
