@@ -1,0 +1,5 @@
+require('plugin_manager')
+require('aliases')
+require('options')
+require('key_mappings')
+require('colorscheme')
